@@ -1,0 +1,125 @@
+* geobox
+** Beskrivelse
+*** Det basale
+Dette er "Kassen"\texttrademark!
+
+Når Kassen tændes, giver den en mission på displayet. Når kassen registrerer at missionen er fuldført, giver den en ny indtil alle missioner er gennemført og den åbner...
+
+Missionerne kommer i tre kategorier.:
+1) Fuldføres når Kassen er medbragt til det påkrævede sted.
+2) Fuldføres når dato og tid matcher det krævede.
+3) Kræver accept at blive fuldført. I dette tilfælde er det en reed-switch der bliver aktiveret med en magnet.
+
+Missionerne kan være en kombination alle tre kategorier.
+
+**** Brug
+Du tænder og slukker på den sorte knap. Når den er tændt, vil den vise missionen og forsøge at få GPS-fix.
+Hvis den ikke får fix, eller står inaktiv i længere tid, slukker den automatisk. Det kan du slå fra(og til igen) ved at holde den venstre røde knap ind.
+Holder du den højre røde knap inde får du vist aktuel position, tid mv. Trykker du igen på højre knap kan du bladre igennem gennemførte missioner indtil den aktuelle. Du går tilbage igen med venstre. Hold højre knap inde igen for at gå tilbage til missions-mode.
+
+**** Beskrivelse
+Når kassen har GPS-fix, gemmer den position og tid hvert sekund på SD-kortet - den kan altså bruges som gps-logger. Når en mission gennemgøres, gemmes yderligere 'tidspunkt, position og en kort beskrivelse' som et waypoint.
+
+På siden http://www.gpsvisualizer.com/map_input?form=googleearth kan du uploade datafilen og få vist din rute på google maps eller earth.
+
+*** GPS fix
+
+Her kommer lige en rekapitulering af GPS:
+
+Der er opsendt 64 GPS satellitter i alt, hvoraf 31 er operationelle (jf. rumskrot artiklen).
+Den første blev opsendt 1978 og den ældste der stadig virker er opsendt i 1990.
+
+For at bestemme din position(2D) skal du have fix på tre satellitter. Fire så får du også højden. Du vil sikkert se at kassen til tider kender tiden men ikke positionen. Tiden kræver kun én satellit.
+
+GPS-signalet består af tre dele.
+1) ID. nummer på satellitten, dato og tid samt status på satellitten.
+2) Almanak data der upræcist beskriver satellittens kurs. Hver enkelt satellit sender en almanak der indeholder kurs for alle satellitter. GPS-modtagen bruger disse data(sammenholdt med dens interne tid) til at beregne hvilke satellitter den bør modtage signal fra. Almanakken indeholder også korrektionsdata til den forstyrrelse der sker af signalet i ionosfæren og andet kalibreringsdata. Fordi beskrivelsen af kursen ikke er specielt præcis, er data gyldigt i op til et halvt år. 
+3) Ephemeris data(Efemeride på dansk) er en præcis korrektion af den enkeltes satellit kurs og tid. Det er dét signal der bruges til at beregne positionen og skal modtages kontinuert. Når GPS'en slukkes gemmes data fordi den præcise beskrivelse af satellitternes position giver en meget kortere tid inden fix fås når den tændes igen. Data er dog kun gyldigt i maks fire timer.
+
+GPS-modulet har et lille batteri og hukommelse så almanak, ephemeris og tid gemmes når den slukkes. Når GPS'en tændes igen skelnes der mellem tre forskellige tilstande:
+
+Factory Start: Alle data er invalide
+Cold start: Almanak data er valid mens ephemeris udløbet
+Varm start: Alle data er valide
+
+Hvis almanakken er ugyldig(f.eks. hvis du har flyttet GPS'en meget eller den interne tid er upræcis), skal GPS'en først finde en satellit og downloade tid og almanak på ny. Bare det at downloade almanakken tager 12.5 min, derudover skal satellitten først findes i en "sky search"
+
+Når en omtrentlig position kendes fra almanakken, låser GPS'en fast til den enkelte satellit og downloader ephemeris data. Selve download tiden er omkring 13 sekunder pr. satellit.
+GPS-modulet i kassen har én kanal(kan kun downloade fra én satellit ad gangen), derfor tager en varm start omkring et~to minutter før positionen er kendt. Kold start er langsommere(seks~syv minutter) og factory reset kan tage op mod en halv time.
+
+
+GPS-modulet sender konstant forskellige tekststrenge der indeholder tid, position mv (f.eks. $GPGGA,002153.000,3342.6618,N,11751.3858,W,1,10,1.2,27.0,M,-34.2,M,,0000*5E) til arduino'en (dén ting der styrer det hele). Først tjekkes at strengen er modtaget korrekt ud fra checksummen(unik sum af alle tegnene fra $ indtil *, fundet ved XOR og vist som hexadecimal - dvs. her 5E), hvorefter de ønskede værdier ekstraheres. Længde- og breddegrad er i grader og decimalminutter (eg. 3342.6618,N = 33^0 42.6618'N), så det konverteres til decimalgrader - dét format de fleste GIS systemer bruger og bl.a. også google maps. Dokumentation for indholdet af tekststrengene kan findes på http://www.gpsinformation.org/dale/nmea.htm.
+
+
+Ps.(ingen tekst mellem os uden en Ps:) )
+Forresten har satellitterne en sendestyrke på 50W( samme effekt som en glødepære i stuen). Imponerende at et så svagt signal kan opfanges hernede...
+
+
+God fornøjelse!
+
+
+** Teknik
+Boksen kan køre på en Arduino Uno, der kun har 32kB programhukommelse( hvoraf 0.5kB bruges til bootloaderen).
+For at få plads til missionerne, gemmes de på et SDkort i filen =mission.txt=. Strukturen er
+#+BEGIN_SRC
+// |mission text | mission completed text | lattitude | longitude | treshold | gps required | time | time required | accept required | //
+| Vi starter nemt. Vent på klokken bliver 12. | Nemt, hva! | 55.698293 | 12.555753 | 15 | 0 | 26/09/2015/12/00 | 1 | 0 |
+#+END_SRC
+
+Arduioen læser kun den mission ind der aktuelt vises, så der kan tilføjes et uendeligt antal missioner. Antallet af missioner i spillet sættes i config-filen =set.txt=.
+
+#+BEGIN_SRC code
+cat set.txt:
+// Ændrer serial for at genstarte kassen, startende med mission nr givet ved start_from.
+serial=1
+start_from=1
+delay=10
+nMission=9
+init=Dette er kassen. Gennemfoer alle missioner og jeg aabner.
+welcome=Welcome back earthling
+completed=Godt klaret. Naeste mission er
+finish=Spillet er faerdig. Tillykke. Boksen aabner
+timezone=2
+#+END_SRC
+
+
+*** Biblioteker
+På grund af den sparsomme progmem/ram bruges der biblioteker der er sparsomme med ressourcer, men til tider mere besværlige at bruge.
+**** SD
+Arduinos SD bibliotek fylder for meget.
+Jeg bruger [[http://forum.arduino.cc/index.php?topic%3D37604.0][denne]] wrapper til [[http://elm-chan.org/fsw/ff/00index_p.html][Petit FatFs]]. Der er kommet en ny wrapper på [[https://github.com/greiman/PetitFS][github]]; den har jeg ikke erfaringer med.
+Ønsker der større funktionalitet, er der [[https://github.com/greiman/SdFat][SdFat]].
+
+**** SoftSerial
+Den udgave der følger med nyere versioner(>=1.0) af Arduino IDE, er =NewSoftSerial=(i dag omdøbt til =SoftSerial=) skrevet af Mikal Hart.
+Der er dog visse problemer, hovedsageligt cpu-brug og det at den ikke kan bruges sammen med f.eks. =Servo= biblioteket. Det kan dog omgås ved at bruge =ss.end()= og =ss.begin=.
+
+#+BEGIN_QUOTE
+CPU Usage and Interrupt Latency Requirements
+NewSoftSerial requires nearly 100% CPU time while transmitting or receiving data. Low interrupt latency is also required for reliable reception, which limits all other libraries and code using interrupts. For these reasons, UART Serial should always be used if only a single serial port is needed.
+
+NewSoftSerial should not be used at slow baud rates. Because interrupts are disabled for approximately 9.5 bit times, slow baud rates can impose too much interrupt latency on other code. Baud rates below 4800 can interfere with basic time keeping functions which make millis(), micros(), and delay() function.
+
+Fast baud rates can become unreliable for reception if other interrupt-based libraries impose too much latency, either by using too much CPU time inside their interrupts, or by keeping interrupts disabled. For example, the OneWire library must disable interrupts for 80 us for some operations. The bit time must be more than double the worst case interrupt latency for reliable reception.
+
+Even the timer0 interrupt for time keeping can take as long as 10 us in its worst case (on Teensy, Arduino's code is slower), which means even 57600 could suffer incorrect reception. Other interrupt-based code can further interfere.
+
+Of course, other latency sensitive libraries, like Servo, will not perform reliably if NewSoftSerial is blocking interrupts while other code requires low latency response.
+
+The NewSoftSerial has a big impact for timing and interrupts. You can avoid that with the Arduino Leonardo which has a spare hardware Serial port, or the Arduino Mega 2560 which has 3 spare hardware Serial ports.
+
+Using UART Serial is always best, but if NewSoftSerial must be used, baud rates between 9600 to 38400 may be the most compatible. 
+#+END_QUOTE
+
+
+***** Alternativer
+[[http://www.pjrc.com/teensy/td_libs_AltSoftSerial.html][AltSoftSerial]] og [[http://forum.arduino.cc/index.php?topic%3D338205.msg2333171#msg2333171][gSoftSerial]]. Jeg bruger =gSoftSerial=.
+
+#+BEGIN_QUOTE
+=AltSoftSerial= would make a big difference. It uses about 5% of the bandwidth versus 95% for SoftwareSerial. But you'd have to cut a trace and do some soldering since it requires specific pins (pin 8 for RX and pin 9 for TX on an Uno).
+
+Alternatively, you could use the gSoftSerial code written especially for a GPS. You can use any of the pins. It consumes about 7% of the processor bandwidth at 9600 baud. Instead of delay loops with interrupts disabled, it reads timer0, which it assumes is in the default mode of 1 tick per 4us, to determine the incoming bits. It is limited to 9600, 19200 and 38400 baud, it isn't full duplex and it isn't as robust as AltSoftSerial.
+#+END_QUOTE
+
+**** GPS
+Jeg bruger [[http://arduiniana.org/libraries/tinygpsplus/][TinyGPS++]] men det ser ud til at [[https://github.com/SlashDevin/NeoGPS][NeoGPS]] er bedre.

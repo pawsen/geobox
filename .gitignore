@@ -1,0 +1,9 @@
+build*/
+*~
+data/
+GPATH
+GRTAGS
+GTAGS
+TAGS
+\#*#
+README_tasks.org
