@@ -1,10 +1,10 @@
 // Kommentar //
-serial=7
+serial=2
 start_from=1
 delay=10
-nMission=9
-init=Dette er kassen. Gennemfoer alle missioner og jeg aabner mig.
-welcome=Welcome back earthling
+nMission=12
+init=Dette er kassen. Gennemfoer alle missioner og jeg aabner.
+welcome=Welcome back           earthling ....
 completed=Godt klaret. Naeste mission er
 finish=Spillet er faerdig. Tillykke. Boksen aabner
 timezone=2

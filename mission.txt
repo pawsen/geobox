@@ -1,10 +1,14 @@
 // mission text | mission completed text | lattitude | longitude | treshold | gps required | time | time required | accept required | //
-|Ok. Vi starter nemt. Vent på klokken bliver 12.|Nemt, hva! Men ogsaa rimelig kedeligt. Heldigvis er der vildt mange missioner:)|55.698293|12.555753|15|0|26/09/2015/12/00|1|0|
-|Denne mision er ven-tet med laengsel:         Snav Paw.|uhhhm lækkert|55.698293|12.555753|15|0|14/01/2015/23/59|0|1|
-|Tag til kontakt impro. Onsdage 18-20 paa Raadmandsgade Skolen.|Ret fint.|55.696866|12.557738|15|1|14/01/2015/23/59|0|0|
-|Tag i sauna på Christiania. Hop i vandet fra broen foerst|Naeste mission er:|55.673698|12.602155|15|1|26/09/2015/06/30|0|0|
+|Ok xxx. Vi starter nemt. Vent paa klokken bliver 12.|Nemt, hva! Men ogsaa rimelig kedeligt. Heldigvis er der vildt mange missioner:)|55.698293|12.555753|15|0|26/09/2015/12/00|1|0|
+|Denne mision er ven-tet med laengsel:         Snav Paw.|uhhhm laekkert|55.698293|12.555753|15|0|14/01/2015/23/59|0|1|
+|Hej xxx - vi tager i Labitat:          Lodder elektronik og fletter fingre.|Saa er vi endelig i gang :)|55.676281|12.545566|15|1|14/01/2015/23/59|0|0|
+|Besoeg det forladte hus paa              reberbanegade 51    Husk lommelygte|Spaendende|55.6616072|12.6060678|15|1|14/01/2015/23/59|0|0|
+|Spy ild i pergolaen|Sejt :)|55.698914|12.550010|15|0|14/01/2015/23/59|0|1|
+|Tag til kontakt impro. Onsdage 18-20 paa Raadmandsgades skole(Tumlingesalen).|Ret fint.|55.698914|12.550010|15|1|14/01/2015/23/59|0|0|
+|Overnat i shelter.  Flagbanken, Stevns  Naturcenter(Mandehoved 10). Blaf derned|Kan soveposerne lynes sammen, bliver det ikke hyggeligere|55.3261503|12.4486962|15|1|26/09/2015/06/30|0|0|
+|Tag i sauna paa Christiania. Hop i vandet fra broen foerst|Naeste mission er:|55.673698|12.602155|15|1|26/09/2015/06/30|0|0|
 |Telefonfis.    Ide: Cat facts/Udgiv dig for gallup/radioshow/etc.|Det var nok akavet. Der kommer ikke mere af den slags.|66.675200856909825|6.571041584014893|5|0|15/01/2015/23/59|0|1|
-|Goto Labitat        Lodde elektronik og snakke.|Det foerste hackerspace i Danmark|55.676281|12.545566|15|1|14/01/2015/23/59|0|0|
 |Find Orion fra Tisvilde observatorium|Orion kan foerst ses fra oktober/november paa den nordlige halvkugle|56.050951|12.097657|30|1|16/01/2015/23/59|0|0|
 |Konkurrence i       Torkajak(drycajac)   Erotisk Praemie.|Ideen kommer fra Groenland|66.675200|6.571000|5|0|15/01/2015/23/59|0|1|
-|Smut forbi bageren  (runddelen) og snak  dig til en smagsproeve|Godt klaret!|55.694199|12.549380|15|1|26/09/2015/06/30|0|0|
+|Smut forbi bageren  (runddelen) og snak  dig til en smagsproeve|Naeste mission:|55.694199|12.549380|15|1|26/09/2015/06/30|0|0|
+

@@ -44,8 +44,7 @@ $(shell etags *.ino *.cpp)
 # set variables locally
 ARDUINO_DIR=/usr/share/arduino
 #ARDMK_DIR=/usr/share
-ARDMK_DIR=~/Dropbox/Labitat/libraries/Arduino-Makefile
-AVR_TOOLS_DIR= /usr
+ARDMK_DIR=~/Dropbox/Labitat/libraries/arduino/Arduino-Makefile
 
 # suppress printing configuration.
 ARDUINO_QUIET=1

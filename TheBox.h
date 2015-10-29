@@ -4,7 +4,9 @@
 #define THEBOX_V2_H
 
 #include "misc.h"
+#include <Flash.h>
 
+#define F2(str) (_FLASH_STRING(PSTR(str)))
 #define byte uint8_t
 //#define DEBUG
 #define _SD
@@ -45,6 +47,9 @@ void check_inactivity(boxSettings *box);
 void redisplayMission(boxSettings *box);
 void missionCompleted(boxSettings *box);
 void boxActivity(boxSettings *box);
+
+void stringToLCD_flash(const _FLASH_STRING &, bool w_delay=true);
+void stringToLCD(const char *stringIn, bool w_delay = true);
 
 void smartDelay(unsigned long ms);
 

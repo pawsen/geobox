@@ -6,6 +6,7 @@
 
 #include <petit_fatfs.h>
 #include <MemoryFree.h>
+#include "TheBox.h"
 
 #include "misc.h"
 #include <Time.h>
@@ -22,7 +23,7 @@ struct missionStruct{
   char text[TEXTLENGTH], completed[TEXTLENGTH];
   /* time_t = unsigned long */
   time_t time;
-	bool requirePos, requireTime, requireAccept;
+  bool requirePos, requireTime, requireAccept;
 };
 
 
@@ -32,7 +33,7 @@ void tx(byte d);
 byte rx();
 
 
-void fileRead(int err, int nMission, struct missionStruct *ms);
+void fileRead(int err, const char *file, int nMission, struct missionStruct *ms);
 void settingsRead(int err, const char *file, struct boxSettings *box);
 //void settingsRead(int err, struct boxSettings *box);
 void processChunk(char * str, byte readPart, struct missionStruct *ms);

@@ -33,14 +33,25 @@ void spi_init()
 	SPCR = _BV(MSTR) | _BV(SPE);
 }
 
+void printError(int err, const char *file){
+
+    char errormsg[60];
+    sprintf(errormsg, "Fejlkode %d ved aabning af fil: %s   Tjek sd-kortet",err, file);
+#ifdef DEBUG
+    Serial.println(errormsg);
+#endif
+    stringToLCD(errormsg, false);
+    turnOff(10000);
+}
+
+
 
 void settingsRead(int err, const char *file, struct boxSettings *box){
 
-	if (err != 0){
-			Serial.print(F("Fejlkode ")), Serial.print(err),
-					Serial.print(F(" ved åbning af fil ")), Serial.println(file);
-		return;
-	}
+    if (err != 0){
+        printError(err,file);
+        return;
+    }
 
 	char str[TEXTLENGTH];
 	const int READ_STRING_SIZE = sizeof(str) - 1;
@@ -124,10 +135,11 @@ void settingsRead(int err, const char *file, struct boxSettings *box){
 }
 
 
-void fileRead(int err, int nMission, struct missionStruct *ms)
-{
-	if (err == 0)
-	{
+void fileRead(int err, const char *file, int nMission, struct missionStruct *ms){
+    if (err != 0){
+        printError(err,file);
+        return;
+    } else {
 
 		char str[TEXTLENGTH];
 		const int READ_STRING_SIZE = sizeof(str) - 1;
@@ -190,10 +202,6 @@ void fileRead(int err, int nMission, struct missionStruct *ms)
 		}while (bytes_read == 1);
 
 
-	}
-	else
-	{
-		Serial.print("Error code "); Serial.print(err); Serial.println(" while opening file");
 	}
 }
 

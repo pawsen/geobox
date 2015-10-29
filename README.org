@@ -57,7 +57,6 @@ Forresten har satellitterne en sendestyrke på 50W( samme effekt som en glødep�
 
 God fornøjelse!
 
-
 ** Teknik
 Boksen kan køre på en Arduino Uno, der kun har 32kB programhukommelse( hvoraf 0.5kB bruges til bootloaderen).
 For at få plads til missionerne, gemmes de på et SDkort i filen =mission.txt=. Strukturen er
@@ -81,8 +80,6 @@ completed=Godt klaret. Naeste mission er
 finish=Spillet er faerdig. Tillykke. Boksen aabner
 timezone=2
 #+END_SRC
-
-
 *** Biblioteker
 På grund af den sparsomme progmem/ram bruges der biblioteker der er sparsomme med ressourcer, men til tider mere besværlige at bruge.
 **** SD
@@ -111,14 +108,13 @@ The NewSoftSerial has a big impact for timing and interrupts. You can avoid that
 Using UART Serial is always best, but if NewSoftSerial must be used, baud rates between 9600 to 38400 may be the most compatible. 
 #+END_QUOTE
 
-
 ***** Alternativer
 [[http://www.pjrc.com/teensy/td_libs_AltSoftSerial.html][AltSoftSerial]] og [[http://forum.arduino.cc/index.php?topic%3D338205.msg2333171#msg2333171][gSoftSerial]]. Jeg bruger =gSoftSerial=.
 
 #+BEGIN_QUOTE
 =AltSoftSerial= would make a big difference. It uses about 5% of the bandwidth versus 95% for SoftwareSerial. But you'd have to cut a trace and do some soldering since it requires specific pins (pin 8 for RX and pin 9 for TX on an Uno).
 
-Alternatively, you could use the gSoftSerial code written especially for a GPS. You can use any of the pins. It consumes about 7% of the processor bandwidth at 9600 baud. Instead of delay loops with interrupts disabled, it reads timer0, which it assumes is in the default mode of 1 tick per 4us, to determine the incoming bits. It is limited to 9600, 19200 and 38400 baud, it isn't full duplex and it isn't as robust as AltSoftSerial.
+Alternatively, you could use the =gSoftSerial= code written especially for a GPS. You can use any of the pins. It consumes about 7% of the processor bandwidth at 9600 baud. Instead of delay loops with interrupts disabled, it reads timer0, which it assumes is in the default mode of 1 tick per 4us, to determine the incoming bits. It is limited to 9600, 19200 and 38400 baud, it isn't full duplex and it isn't as robust as AltSoftSerial.
 #+END_QUOTE
 
 **** GPS
