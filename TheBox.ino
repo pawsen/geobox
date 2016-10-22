@@ -117,7 +117,7 @@ void setup()
     menu.id = 0; menu.changed = false;
     box.log_time = millis();
 
-    
+    // read current mission
     fileRead(PFFS.open_file(const_cast<char*>(MISSIONS)),MISSIONS,box.mission,&ms);
 }
 void loop() {
@@ -125,6 +125,7 @@ void loop() {
     if (box.timeout)
         check_inactivity(&box);
 
+    // wait approx. one second, before proceeding to update display.
     unsigned long start = millis();
     do{
         /* buttons for menu */
@@ -235,19 +236,27 @@ void loop() {
             if(time > ms.time){
                 box.timeCompleted = true;
             } else {
-                // printRemainTime(dist);
-                /* pointer has to be set here, because it's initialized inside main-loop */
                 t = &ms.time;
+                /*
+                 * For some reason it is necessary to call some function from
+                 * the time library, before calling time with an arfument,
+                 * eg. day(*t).
+                 * If this is not done, day(*t) will show the current day and
+                 * not the day extracted from *t as expected.
+                */
+                day();
+                // printRemainTime(dist);
                 if(box.second_time){
                     box.second_time = false;
                     stringToLCD_flash(F2("Mission gennemfoeres"));
-                    sprintf(dateTime, "%02d/%02d/%02d %02d:%02d:%02d  ",
-                            day(*t),month(*t), year(*t), hour(*t), minute(*t), second(*t));
+                    sprintf(dateTime, "%02d/%02d/%02d %02d:%02d:%02d ",
+                            day(*t),month(*t), year(*t),
+                            hour(*t), minute(*t), second(*t));
                     lcd.setCursor(0,1), lcd.print(dateTime);
                     lcd.setCursor(0,2), lcd.print(F("Der mangler: "));
                 }
                 /* get remaining time until mission is completed */
-                dateFromSecs(*t-time, Day, Hour, Minute, Second);
+                dateFromSecs(*t - time, Day, Hour, Minute, Second);
                 sprintf(dateTime, "d: %02d, t: %02d:%02d:%02d",
                         Day, Hour, Minute, Second);
                 lcd.setCursor(0,3), lcd.print(dateTime);
