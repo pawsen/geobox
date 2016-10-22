@@ -33,7 +33,7 @@ struct boxSettings{
   byte mission;
   int nMission;
 
-	int timezone;
+  int timezone;
 
   /* First time: show mission
      Second time: Show remaining dist, time etc. */
@@ -43,9 +43,9 @@ struct boxSettings{
   bool turnoff;      /* Has the box turned off */
   bool timeout;       /* Can the box auto-turnoff */
   bool msCompleted;  /* is the mission completed */
-	bool posCompleted;
-	bool timeCompleted;
-	bool acceptCompleted;
+  bool posCompleted;
+  bool timeCompleted;
+  bool acceptCompleted;
 
   /* REED switch */
   bool bdrunning;
@@ -59,7 +59,7 @@ struct boxSettings{
   unsigned int delay;
 
   /* msg */
-		char init[TEXTLENGTH], welcome[TEXTLENGTH], completed[TEXTLENGTH], finish[TEXTLENGTH];
+  char init[TEXTLENGTH], welcome[TEXTLENGTH], completed[TEXTLENGTH], finish[TEXTLENGTH];
 
 };
 
