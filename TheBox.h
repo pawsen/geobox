@@ -8,7 +8,7 @@
 
 #define F2(str) (_FLASH_STRING(PSTR(str)))
 #define byte uint8_t
-//#define DEBUG
+// #define DEBUG
 #define _SD
 
 
@@ -17,7 +17,7 @@
 const int DELAY1 = 2000;  /* For showing missions etc */
 const int DELAY2 = 2000;  /* For turnoff */
 const int DELAY_LCD_PRINT = 1;
-const unsigned long SHUTDOWN_TIME = 10000;
+const unsigned long SHUTDOWN_TIME = 180000;
 const unsigned long GPS_TIMEOUT = 10000;
 const unsigned long GPS_SHOW_WARNING = 8000;
 #else
